@@ -1,18 +1,18 @@
-# pauls-dat-api
+# dbrowser-legacy-api
 
-A library of functions that make working with [dat](https://github.com/datproject/dat-node) / [hyperdrive](https://github.com/mafintosh/hyperdrive) easier.
+A library of functions that make working with [dwebx](https://github.com/distributedweb/dwebx-node) / [ddrive](https://github.com/distributedweb/ddrive) easier.
 Includes common operations, and some sugars.
-These functions were factored out of [beaker browser](https://github.com/beakerbrowser/beaker)'s internal APIs.
+These functions were factored out of [dbrowserx browser](https://github.com/dbrowser/dbrowser)'s internal APIs.
 
 All async methods work with callbacks and promises. If no callback is provided, a promise will be returned.
 
-Any time a hyperdrive `archive` is expected, a [scoped-fs](https://github.com/pfrazee/scoped-fs) instance can be provided, unless otherwise stated.
+Any time a ddrive `archive` is expected, a [scoped-fs](https://github.com/distributedweb/scoped-fs) instance can be provided, unless otherwise stated.
 
 ```js
-var hyperdrive = require('hyperdrive')
+var ddrive = require('ddrive')
 var ScopedFS = require('scoped-fs')
 
-var archive = hyperdrive('./my-hyperdrive')
+var archive = ddrive('./my-ddrive')
 var scopedfs = new ScopedFS('./my-scoped-fs')
 
 await pda.readFile(archive, '/hello.txt') // read the published hello.txt
@@ -23,7 +23,7 @@ await pda.readFile(scopedfs, '/hello.txt') // read the local hello.txt
 
 To use with node versions lesser than 7 use:
 ```js
-var pda = require('pauls-dat-api/es5');
+var pda = require('dbrowser-legacy-api/es5');
 ```
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -67,21 +67,21 @@ var pda = require('pauls-dat-api/es5');
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ```js
-const pda = require('pauls-dat-api')
+const pda = require('dbrowser-legacy-api')
 ```
 
 ## Lookup
 
 ### stat(archive, name[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Entry name (string).
- - Returns a Hyperdrive Stat entry (object).
+ - Returns a DDrive Stat entry (object).
  - Throws NotFoundError
 
 ```js
 // by name:
-var st = await pda.stat(archive, '/dat.json')
+var st = await pda.stat(archive, '/dwebx.json')
 st.isDirectory()
 st.isFile()
 console.log(st) /* =>
@@ -107,7 +107,7 @@ Stat {
 
 ### readFile(archive, name[, opts, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Entry path (string).
  - `opts`. Options (object|string). If a string, will act as `opts.encoding`.
  - `opts.encoding` Desired output encoding (string). May be 'binary', 'utf8', 'hex', or 'base64'. Default 'utf8'.
@@ -115,13 +115,13 @@ Stat {
  - Throws NotFoundError, NotAFileError.
 
 ```js
-var manifestStr = await pda.readFile(archive, '/dat.json')
+var manifestStr = await pda.readFile(archive, '/dwebx.json')
 var imageBase64 = await pda.readFile(archive, '/favicon.png', 'base64')
 ```
 
 ### readdir(archive, path[, opts, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `path` Target directory path (string).
  - `opts.recursive` Read all subfolders and their files as well?
  - Returns an array of file and folder names.
@@ -141,7 +141,7 @@ console.log(listing) /* => [
 
 ### readSize(archive, path[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `path` Target directory path (string).
  - Returns a number (size in bytes).
 
@@ -156,7 +156,7 @@ console.log(size) // => 123
 
 ### writeFile(archive, name, data[, opts, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Entry path (string).
  - `data` Data to write (string|Buffer).
  - `opts`. Options (object|string). If a string, will act as `opts.encoding`.
@@ -170,7 +170,7 @@ await pda.writeFile(archive, '/profile.png', fs.readFileSync('/tmp/dog.png'))
 
 ### mkdir(archive, name[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Directory path (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
 
@@ -180,7 +180,7 @@ await pda.mkdir(archive, '/stuff')
 
 ### copy(archive, sourceName, targetName[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `sourceName` Path to file or directory to copy (string).
  - `targetName` Where to copy the file or folder to (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
@@ -194,7 +194,7 @@ await pda.copy(archive, '/stuff', '/stuff-copy')
 
 ### rename(archive, sourceName, targetName[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `sourceName` Path to file or directory to rename (string).
  - `targetName` What the file or folder should be named (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
@@ -212,7 +212,7 @@ await pda.rename(archive, '/stuff', '/things')
 
 ### unlink(archive, name[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Entry path (string).
  - Throws ArchiveNotWritableError, NotFoundError, NotAFileError
 
@@ -222,7 +222,7 @@ await pda.unlink(archive, '/hello.txt')
 
 ### rmdir(archive, name[, opts, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `name` Entry path (string).
  - `opts.recursive` Delete all subfolders and files if the directory is not empty.
  - Throws ArchiveNotWritableError, NotFoundError, NotAFolderError, DestDirectoryNotEmpty
@@ -235,7 +235,7 @@ await pda.rmdir(archive, '/stuff', {recursive: true})
 
 ### download(archive, name[, cb])
 
- - `archive` Hyperdrive archive (object). Can not be a scoped-fs object.
+ - `archive` DDrive archive (object). Can not be a scoped-fs object.
  - `name` Entry path (string). Can point to a file or folder.
 
 Download an archive file or folder-tree.
@@ -253,7 +253,7 @@ await pda.download(archive, '/')
 
 ### watch(archive[, path])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `path` Entry path (string) or [anymatch](npm.im/anymatch) pattern (array of strings). If falsy, will watch all files.
  - Returns a Readable stream.
 
@@ -293,7 +293,7 @@ events.on('changed', args => {
 
 ### createNetworkActivityStream(archive)
 
- - `archive` Hyperdrive archive (object). Can not be a scoped-fs object.
+ - `archive` DDrive archive (object). Can not be a scoped-fs object.
  - Returns a Readable stream.
 
 Watches the archive for network events, which it emits as an [emit-stream](https://github.com/substack/emit-stream). Supported events:
@@ -431,7 +431,7 @@ console.log(stats) /* => {
 
 ### readManifest(archive[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
 
 A sugar to get the manifest object.
 
@@ -441,24 +441,24 @@ var manifestObj = await pda.readManifest(archive)
 
 ### writeManifest(archive, manifest[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `manifest` Manifest values (object).
 
 A sugar to write the manifest object.
 
 ```js
-await pda.writeManifest(archive, { title: 'My dat!' })
+await pda.writeManifest(archive, { title: 'My dwebx!' })
 ```
 
 ### updateManifest(archive, manifest[, cb])
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `manifest` Manifest values (object).
 
 A sugar to modify the manifest object.
 
 ```js
-await pda.writeManifest(archive, { title: 'My dat!', description: 'the desc' })
+await pda.writeManifest(archive, { title: 'My dwebx!', description: 'the desc' })
 await pda.writeManifest(archive, { title: 'My new title!' }) // preserves description
 ```
 
@@ -470,7 +470,7 @@ Helper to generate a manifest object. Opts in detail:
 
 ```
 {
-  url: String, the dat's url
+  url: String, the dwebx's url
   title: String
   description: String
   type: Array<String>
@@ -481,7 +481,7 @@ Helper to generate a manifest object. Opts in detail:
 }
 ```
 
-See: https://github.com/datprotocol/dat.json
+See: https://github.com/datprotocol/dwebx.json
 
 ## Diff/Merge
 
@@ -557,7 +557,7 @@ Output looks like:
 
 ### findEntryByContentBlock(archive, block)
 
- - `archive` Hyperdrive archive (object).
+ - `archive` DDrive archive (object).
  - `block` Content-block index
  - Returns a Promise for `{name:, start:, end:}`
 

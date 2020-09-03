@@ -1,5 +1,5 @@
 const test = require('ava')
-const hyperdrive = require('hyperdrive')
+const ddrive = require('ddrive')
 const tutil = require('./util')
 const pda = require('../index')
 
@@ -11,7 +11,7 @@ async function contentEvent (archive) {
 
 test('watch fs', async t => {
   // HACK
-  // 100ms timeouts are needed here because the FS watcher is not as consistent as dat's
+  // 100ms timeouts are needed here because the FS watcher is not as consistent as dwebx's
   // -prf
 
   var fs
@@ -283,7 +283,7 @@ test('watch remote sparse', async t => {
   var done
   const src = await tutil.createArchive()
   await new Promise(resolve => src.ready(resolve))
-  const dst = hyperdrive(tutil.tmpdir(), src.key, {sparse: true})
+  const dst = ddrive(tutil.tmpdir(), src.key, {sparse: true})
   const srcRS = src.replicate({live: true})
   const dstRS = dst.replicate({live: true})
   srcRS.pipe(dstRS).pipe(srcRS)
@@ -330,7 +330,7 @@ test('watch remote non-sparse', async t => {
   var done
   const src = await tutil.createArchive()
   await new Promise(resolve => src.ready(resolve))
-  const dst = hyperdrive(tutil.tmpdir(), src.key, {sparse: false})
+  const dst = ddrive(tutil.tmpdir(), src.key, {sparse: false})
   const srcRS = src.replicate({live: true})
   const dstRS = dst.replicate({live: true})
   srcRS.pipe(dstRS).pipe(srcRS)
@@ -371,7 +371,7 @@ test('createNetworkActivityStream', async t => {
     { name: 'bar.data', content: Buffer.from([0x00, 0x01]) },
     'bar.txt'
   ])
-  const dst = hyperdrive(tutil.tmpdir(), src.key, {sparse: false})
+  const dst = ddrive(tutil.tmpdir(), src.key, {sparse: false})
 
   var done = new Promise(resolve => {
     var stream = pda.createNetworkActivityStream(dst)

@@ -176,11 +176,11 @@ test('diff against populated', async t => {
   ])
 })
 
-test('diff always ignores dat.json', async t => {
+test('diff always ignores dwebx.json', async t => {
   var changes
 
   const srcArchive = await tutil.createArchive([
-    'dat.json',
+    'dwebx.json',
     'foo.txt',
     { name: 'bar.data', content: Buffer.from([0x00, 0x01]) },
     'subdir/',
@@ -197,7 +197,7 @@ test('diff always ignores dat.json', async t => {
 
   changes = await pda.diff(srcArchive, '/', dstArchive, '/')
   t.deepEqual(changes.map(massageDiffObj), [
-    // NOTE: no dat.json
+    // NOTE: no dwebx.json
     { change: 'add', type: 'file', path: '/foo.txt' },
     { change: 'add', type: 'file', path: '/bar.data' },
     { change: 'add', type: 'dir', path: '/subdir' },
@@ -210,19 +210,19 @@ test('diff always ignores dat.json', async t => {
 
   changes = await pda.diff(srcArchive, '/', dstArchive, '/', {paths: ['/foo.txt', '/subdir']})
   t.deepEqual(changes.map(massageDiffObj), [
-    // NOTE: no dat.json
+    // NOTE: no dwebx.json
     { change: 'add', type: 'file', path: '/foo.txt' },
     { change: 'add', type: 'dir', path: '/subdir' },
     { change: 'add', type: 'file', path: '/subdir/bar.data' },
     { change: 'add', type: 'file', path: '/subdir/foo.txt' }
   ])
 
-  // with paths filter that tries to include dat.json
+  // with paths filter that tries to include dwebx.json
   // =
 
-  changes = await pda.diff(srcArchive, '/', dstArchive, '/', {paths: ['/dat.json', '/foo.txt', '/subdir']})
+  changes = await pda.diff(srcArchive, '/', dstArchive, '/', {paths: ['/dwebx.json', '/foo.txt', '/subdir']})
   t.deepEqual(changes.map(massageDiffObj), [
-    // NOTE: no dat.json
+    // NOTE: no dwebx.json
     { change: 'add', type: 'file', path: '/foo.txt' },
     { change: 'add', type: 'dir', path: '/subdir' },
     { change: 'add', type: 'file', path: '/subdir/bar.data' },

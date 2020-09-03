@@ -1,7 +1,7 @@
 {
-  "name": "pauls-dat-api",
-  "version": "8.1.0",
-  "description": "Library of functions that make working with dat / hyperdrive easier.",
+  "name": "dbrowser-legacy-api",
+  "version": "1.0.0",
+  "description": "Library of functions that make working with dwebx / ddrive easier.",
   "main": "index.js",
   "scripts": {
     "prepublish": "npm run babel",
@@ -10,25 +10,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pfrazee/pauls-dat-api.git"
+    "url": "git+https://github.com/distributedweb/dbrowser-legacy-api.git"
   },
   "keywords": [
-    "dat",
-    "hyperdrive",
+    "dwebx",
+    "ddrive",
     "p2p",
     "files"
   ],
   "author": "Paul Frazee <pfrazee@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pfrazee/pauls-dat-api/issues"
+    "url": "https://github.com/distributedweb/dbrowser-legacy-api/issues"
   },
-  "homepage": "https://github.com/pfrazee/pauls-dat-api#readme",
+  "homepage": "https://github.com/distributedweb/dbrowser-legacy-api#readme",
   "dependencies": {
     "anymatch": "^2.0.0",
-    "beaker-error-constants": "^1.4.0",
+    "dbrowser-error-constants": "git://github.com/dbrowser/dbrowser-error-constants.git#03f7044ca29925fc91b2efc2f7ac1ea23ff3bb7e",
     "call-me-maybe": "^1.0.1",
-    "dat-encoding": "^4.0.2",
+    "dwebx-encoding": "git://github.com/DistributedWeb/dwebx-encoding.git#465ce6e73d63b65a1aedb40fa4c3e90690edcbe5",
     "diff-file-tree": "^2.1.1",
     "emit-stream": "^0.1.2",
     "fs-extra": "^4.0.3",
@@ -39,7 +39,7 @@
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "hyperdrive": "^9.12.3",
+    "ddrive": "git://github.com/DistributedWeb/ddrive.git#e1c7b7e012285eaeba5cc0ea834c68ee98649857",
     "scoped-fs": "^1.1.3"
   }
 }
