@@ -28,7 +28,7 @@
     "anymatch": "^2.0.0",
     "dbrowser-error-constants": "git://github.com/dbrowser/dbrowser-error-constants.git#03f7044ca29925fc91b2efc2f7ac1ea23ff3bb7e",
     "call-me-maybe": "^1.0.1",
-    "dwebx-encoding": "git://github.com/DistributedWeb/dwebx-encoding.git#465ce6e73d63b65a1aedb40fa4c3e90690edcbe5",
+    "dwebx-encoding": "git://github.com/DistributedWeb/dwebx-encoding.git#8b3042916431b3f33e9991d34665973c6c240cbe",
     "diff-file-tree": "^2.1.1",
     "emit-stream": "^0.1.2",
     "fs-extra": "^4.0.3",
