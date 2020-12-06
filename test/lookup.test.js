@@ -1,12 +1,12 @@
 const test = require('ava')
 const tutil = require('./util')
-const pda = require('../index')
+const dba = require('../index')
 
 var target
 async function stat (t, given, expected) {
   // run test
   try {
-    var entry = await pda.stat(target, given)
+    var entry = await dba.stat(target, given)
   } catch (e) {}
   if (expected) {
     t.truthy(entry)
@@ -110,14 +110,14 @@ test('files have metadata, folders have no metadata', async t => {
     '/baz'
   ])
 
-  var st = await pda.stat(target, '/foo')
+  var st = await dba.stat(target, '/foo')
   t.is(st.isDirectory(), false)
   t.is(st.isFile(), true)
   t.truthy(st.downloaded > 0)
   t.truthy(st.blocks > 0)
   t.truthy(st.size > 0)
 
-  var st = await pda.stat(target, '/subdir')
+  var st = await dba.stat(target, '/subdir')
   t.is(st.isDirectory(), true)
   t.is(st.isFile(), false)
   t.is(st.downloaded, 0)

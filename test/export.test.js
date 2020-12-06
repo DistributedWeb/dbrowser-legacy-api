@@ -2,7 +2,7 @@ const test = require('ava')
 const fs = require('fs')
 const path = require('path')
 const tutil = require('./util')
-const pda = require('../index')
+const dba = require('../index')
 
 test('exportFilesystemToArchive', async t => {
   const srcPath = tutil.tmpdir()
@@ -18,7 +18,7 @@ test('exportFilesystemToArchive', async t => {
   // initial import (dry run)
   // =
 
-  const statsADry = await pda.exportFilesystemToArchive({
+  const statsADry = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     inplaceImport: true,
@@ -33,12 +33,12 @@ test('exportFilesystemToArchive', async t => {
   t.deepEqual(statsADry.removedFolders, [])
   t.deepEqual(statsADry.skipCount, 0)
   t.deepEqual(statsADry.fileCount, 4)
-  t.deepEqual(await pda.readdir(dstArchive, '/'), [])
+  t.deepEqual(await dba.readdir(dstArchive, '/'), [])
 
   // initial import
   // =
 
-  const statsA = await pda.exportFilesystemToArchive({
+  const statsA = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     inplaceImport: true
@@ -56,7 +56,7 @@ test('exportFilesystemToArchive', async t => {
   // no changes
   // =
 
-  const statsB = await pda.exportFilesystemToArchive({
+  const statsB = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     inplaceImport: true
@@ -78,7 +78,7 @@ test('exportFilesystemToArchive', async t => {
   // 2 changes, 2 additions (dry run)
   // =
 
-  const statsDDry = await pda.exportFilesystemToArchive({
+  const statsDDry = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     inplaceImport: true,
@@ -93,12 +93,12 @@ test('exportFilesystemToArchive', async t => {
   t.deepEqual(statsDDry.addedFolders.map(tutil.tonix), ['/subdir2'])
   t.deepEqual(statsDDry.skipCount, 0)
   t.deepEqual(statsDDry.fileCount, 5)
-  t.deepEqual((await pda.readdir(dstArchive, '/')).length, 3)
+  t.deepEqual((await dba.readdir(dstArchive, '/')).length, 3)
 
   // 2 changes, 2 additions
   // =
 
-  const statsD = await pda.exportFilesystemToArchive({
+  const statsD = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     inplaceImport: true
@@ -116,7 +116,7 @@ test('exportFilesystemToArchive', async t => {
   // into subdir
   // =
 
-  const statsE = await pda.exportFilesystemToArchive({
+  const statsE = await dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     dstPath: '/subdir3',
@@ -133,8 +133,8 @@ test('exportFilesystemToArchive', async t => {
   // dont overwrite folders with files
   // =
 
-  await pda.mkdir(dstArchive, '/subdir4')
-  const statsF = await pda.exportFilesystemToArchive({
+  await dba.mkdir(dstArchive, '/subdir4')
+  const statsF = await dba.exportFilesystemToArchive({
     srcPath: path.join(srcPath, 'foo.txt'),
     dstArchive,
     dstPath: '/subdir4',
@@ -144,29 +144,29 @@ test('exportFilesystemToArchive', async t => {
   t.deepEqual(statsF.updatedFiles, [])
   t.deepEqual(statsF.skipCount, 0)
   t.deepEqual(statsF.fileCount, 1)  
-  t.deepEqual(await pda.readdir(dstArchive, '/subdir4'), ['foo.txt'])
+  t.deepEqual(await dba.readdir(dstArchive, '/subdir4'), ['foo.txt'])
 
   // into bad dest
   // =
 
-  await t.throws(pda.exportFilesystemToArchive({
+  await t.throws(dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     dstPath: '/bad/subdir',
     inplaceImport: true
   }))
-  await t.throws(pda.exportFilesystemToArchive({
+  await t.throws(dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     dstPath: '/bad/subdir'
   }))
-  await t.throws(pda.exportFilesystemToArchive({
+  await t.throws(dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     dstPath: '/subdir3/foo.txt',
     inplaceImport: true
   }))
-  await t.throws(pda.exportFilesystemToArchive({
+  await t.throws(dba.exportFilesystemToArchive({
     srcPath,
     dstArchive,
     dstPath: '/subdir3/foo.txt'
@@ -188,7 +188,7 @@ test('exportArchiveToFilesystem', async t => {
   // export all
   // =
 
-  const statsA = await pda.exportArchiveToFilesystem({
+  const statsA = await dba.exportArchiveToFilesystem({
     srcArchive,
     dstPath: dstPathA
   })
@@ -202,7 +202,7 @@ test('exportArchiveToFilesystem', async t => {
   // fail export
   // =
 
-  const errorA = await t.throws(pda.exportArchiveToFilesystem({
+  const errorA = await t.throws(dba.exportArchiveToFilesystem({
     srcArchive,
     dstPath: dstPathA
   }))
@@ -211,7 +211,7 @@ test('exportArchiveToFilesystem', async t => {
   // overwrite all
   // =
 
-  const statsB = await pda.exportArchiveToFilesystem({
+  const statsB = await dba.exportArchiveToFilesystem({
     srcArchive,
     dstPath: dstPathA,
     overwriteExisting: true
@@ -225,7 +225,7 @@ test('exportArchiveToFilesystem', async t => {
   // export subdir
   // =
 
-  const statsC = await pda.exportArchiveToFilesystem({
+  const statsC = await dba.exportArchiveToFilesystem({
     srcArchive,
     dstPath: dstPathB,
     srcPath: '/subdir'
@@ -270,71 +270,71 @@ test('exportArchiveToArchive', async t => {
   // export all
   // =
 
-  await pda.exportArchiveToArchive({
+  await dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveA
   })
 
-  t.deepEqual((await pda.readdir(dstArchiveA, '/')).sort(), ['bar.data', 'foo.txt', 'subdir'])
-  t.deepEqual((await pda.readdir(dstArchiveA, '/subdir')).sort(), ['bar.data', 'foo.txt'])
+  t.deepEqual((await dba.readdir(dstArchiveA, '/')).sort(), ['bar.data', 'foo.txt', 'subdir'])
+  t.deepEqual((await dba.readdir(dstArchiveA, '/subdir')).sort(), ['bar.data', 'foo.txt'])
 
   // export from subdir
   // =
 
-  await pda.exportArchiveToArchive({
+  await dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveB,
     srcPath: '/subdir'
   })
 
-  t.deepEqual((await pda.readdir(dstArchiveB, '/')).sort(), ['bar.data', 'foo.txt'])
+  t.deepEqual((await dba.readdir(dstArchiveB, '/')).sort(), ['bar.data', 'foo.txt'])
 
   // export to subdir
   // =
 
-  await pda.exportArchiveToArchive({
+  await dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveC,
     dstPath: '/gpdir'
   })
 
-  t.deepEqual((await pda.readdir(dstArchiveC, '/')).sort(), ['gpdir'])
-  t.deepEqual((await pda.readdir(dstArchiveC, '/gpdir')).sort(), ['bar.data', 'foo.txt', 'subdir'])
-  t.deepEqual((await pda.readdir(dstArchiveC, '/gpdir/subdir')).sort(), ['bar.data', 'foo.txt'])
+  t.deepEqual((await dba.readdir(dstArchiveC, '/')).sort(), ['gpdir'])
+  t.deepEqual((await dba.readdir(dstArchiveC, '/gpdir')).sort(), ['bar.data', 'foo.txt', 'subdir'])
+  t.deepEqual((await dba.readdir(dstArchiveC, '/gpdir/subdir')).sort(), ['bar.data', 'foo.txt'])
 
   // export from subdir to subdir
   // =
 
-  await pda.exportArchiveToArchive({
+  await dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveD,
     srcPath: '/subdir',
     dstPath: '/gpdir'
   })
 
-  t.deepEqual((await pda.readdir(dstArchiveD, '/')).sort(), ['gpdir'])
-  t.deepEqual((await pda.readdir(dstArchiveD, '/gpdir')).sort(), ['bar.data', 'foo.txt'])
+  t.deepEqual((await dba.readdir(dstArchiveD, '/')).sort(), ['gpdir'])
+  t.deepEqual((await dba.readdir(dstArchiveD, '/gpdir')).sort(), ['bar.data', 'foo.txt'])
 
   // export all and overwrite target
   // =
 
-  await pda.exportArchiveToArchive({
+  await dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveE
   })
 
-  t.deepEqual((await pda.readdir(dstArchiveE, '/')).sort(), ['bar.data', 'foo.txt', 'otherfile.txt', 'subdir'])
-  t.deepEqual((await pda.readdir(dstArchiveE, '/subdir')).sort(), ['bar.data', 'foo.txt'])
+  t.deepEqual((await dba.readdir(dstArchiveE, '/')).sort(), ['bar.data', 'foo.txt', 'otherfile.txt', 'subdir'])
+  t.deepEqual((await dba.readdir(dstArchiveE, '/subdir')).sort(), ['bar.data', 'foo.txt'])
 
   // into bad subdir
   // =
 
-  await t.throws(pda.exportArchiveToArchive({
+  await t.throws(dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveE,
     dstPath: '/bad/subdir'
   }))
-  await t.throws(pda.exportArchiveToArchive({
+  await t.throws(dba.exportArchiveToArchive({
     srcArchive: srcArchiveA,
     dstArchive: dstArchiveE,
     dstPath: '/foo.txt'

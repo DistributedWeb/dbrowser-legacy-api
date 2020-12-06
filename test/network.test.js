@@ -1,7 +1,7 @@
 const test = require('ava')
 const ddrive = require('ddrive')
 const tutil = require('./util')
-const pda = require('../index')
+const dba = require('../index')
 
 function isDownloaded (st) {
   return st.blocks === st.downloaded
@@ -27,14 +27,14 @@ test('download individual files', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  await pda.download(dst, '/foo.txt')
-  await pda.download(dst, 'bar.data')
-  await pda.download(dst, '/subdir/foo.txt')
-  await pda.download(dst, 'subdir/bar.data')
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/bar.data')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/bar.data')), true)
+  await dba.download(dst, '/foo.txt')
+  await dba.download(dst, 'bar.data')
+  await dba.download(dst, '/subdir/foo.txt')
+  await dba.download(dst, 'subdir/bar.data')
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/bar.data')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/bar.data')), true)
 })
 
 test('download a subdirectory', async t => {
@@ -51,11 +51,11 @@ test('download a subdirectory', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  await pda.download(dst, '/subdir')
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/foo.txt')), false)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/bar.data')), false)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/bar.data')), true)
+  await dba.download(dst, '/subdir')
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/foo.txt')), false)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/bar.data')), false)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/bar.data')), true)
 })
 
 test('download a full archive', async t => {
@@ -72,11 +72,11 @@ test('download a full archive', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  await pda.download(dst, '/')
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/bar.data')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/bar.data')), true)
+  await dba.download(dst, '/')
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/bar.data')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/bar.data')), true)
 })
 
 test('download an already-downloaed archive', async t => {
@@ -93,15 +93,15 @@ test('download an already-downloaed archive', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  await pda.download(dst, '/')
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/bar.data')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/bar.data')), true)
+  await dba.download(dst, '/')
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/bar.data')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/bar.data')), true)
   
-  await pda.download(dst, '/')
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/bar.data')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/foo.txt')), true)
-  t.deepEqual(isDownloaded(await pda.stat(dst, '/subdir/bar.data')), true)
+  await dba.download(dst, '/')
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/bar.data')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/foo.txt')), true)
+  t.deepEqual(isDownloaded(await dba.stat(dst, '/subdir/bar.data')), true)
 })

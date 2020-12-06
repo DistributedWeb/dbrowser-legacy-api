@@ -1,7 +1,7 @@
 const test = require('ava')
 const ddrive = require('ddrive')
 const tutil = require('./util')
-const pda = require('../index')
+const dba = require('../index')
 
 async function contentEvent (archive) {
   return new Promise(resolve => {
@@ -23,7 +23,7 @@ test('watch fs', async t => {
   // =
 
   fs = await tutil.createFs()
-  stream = await pda.watch(fs)
+  stream = await dba.watch(fs)
 
   done = new Promise(resolve => {
     changes = ['/a.txt', '/b.txt', '/a.txt', '/a.txt', '/b.txt', '/c.txt']
@@ -40,24 +40,24 @@ test('watch fs', async t => {
   })
 
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/c.txt', 'one', 'utf8')
   await done
 
   // simple pattern
   // =
 
   fs = await tutil.createFs()
-  stream = await pda.watch(fs, '/a.txt')
+  stream = await dba.watch(fs, '/a.txt')
 
   done = new Promise(resolve => {
     changes = ['/a.txt', '/a.txt', '/a.txt']
@@ -74,24 +74,24 @@ test('watch fs', async t => {
   })
 
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/c.txt', 'one', 'utf8')
   await done
 
   // complex pattern
   // =
 
   fs = await tutil.createFs()
-  stream = await pda.watch(fs, ['/a.txt', '/c.txt'])
+  stream = await dba.watch(fs, ['/a.txt', '/c.txt'])
 
   done = new Promise(resolve => {
     let i = 0
@@ -108,24 +108,24 @@ test('watch fs', async t => {
   })
 
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/c.txt', 'one', 'utf8')
   await done
 
   // glob
   // =
 
   fs = await tutil.createFs()
-  stream = await pda.watch(fs, '/*.txt')
+  stream = await dba.watch(fs, '/*.txt')
 
   done = new Promise(resolve => {
     let i = 0
@@ -142,17 +142,17 @@ test('watch fs', async t => {
   })
 
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'one', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/a.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(fs, '/b.txt', 'two', 'utf8')
   await new Promise(r => setTimeout(r, 100))
-  await pda.writeFile(fs, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(fs, '/c.txt', 'one', 'utf8')
   await done
 })
 
@@ -168,7 +168,7 @@ test('watch local', async t => {
 
   archive = await tutil.createArchive()
   await new Promise(resolve => archive.ready(resolve))
-  stream = pda.watch(archive)
+  stream = dba.watch(archive)
 
   done = new Promise(resolve => {
     invalidates = ['/a.txt', '/b.txt', '/a.txt', '/a.txt', '/b.txt', '/c.txt']
@@ -183,12 +183,12 @@ test('watch local', async t => {
     })
   })
 
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/c.txt', 'one', 'utf8')
   await done
 
   // simple pattern
@@ -196,7 +196,7 @@ test('watch local', async t => {
 
   archive = await tutil.createArchive()
   await new Promise(resolve => archive.ready(resolve))
-  stream = pda.watch(archive, '/a.txt')
+  stream = dba.watch(archive, '/a.txt')
 
   done = new Promise(resolve => {
     changes = ['/a.txt', '/a.txt', '/a.txt']
@@ -211,12 +211,12 @@ test('watch local', async t => {
     })
   })
 
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/c.txt', 'one', 'utf8')
   await done
 
   // complex pattern
@@ -224,7 +224,7 @@ test('watch local', async t => {
 
   archive = await tutil.createArchive()
   await new Promise(resolve => archive.ready(resolve))
-  stream = pda.watch(archive, ['/a.txt', '/c.txt'])
+  stream = dba.watch(archive, ['/a.txt', '/c.txt'])
 
   done = new Promise(resolve => {
     changes = ['/a.txt', '/a.txt', '/a.txt', '/c.txt']
@@ -239,12 +239,12 @@ test('watch local', async t => {
     })
   })
 
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/c.txt', 'one', 'utf8')
   await done
 
   // glob
@@ -252,7 +252,7 @@ test('watch local', async t => {
 
   archive = await tutil.createArchive()
   await new Promise(resolve => archive.ready(resolve))
-  stream = pda.watch(archive, '/*.txt')
+  stream = dba.watch(archive, '/*.txt')
 
   done = new Promise(resolve => {
     changes = ['/a.txt', '/b.txt', '/a.txt', '/a.txt', '/b.txt', '/c.txt']
@@ -267,12 +267,12 @@ test('watch local', async t => {
     })
   })
 
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'one', 'utf8')
-  await pda.writeFile(archive, '/a.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/b.txt', 'two', 'utf8')
-  await pda.writeFile(archive, '/c.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'one', 'utf8')
+  await dba.writeFile(archive, '/a.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/b.txt', 'two', 'utf8')
+  await dba.writeFile(archive, '/c.txt', 'one', 'utf8')
   await done
 })
 
@@ -289,7 +289,7 @@ test('watch remote sparse', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  var stream = pda.watch(dst)
+  var stream = dba.watch(dst)
 
   // invalidation phase
 
@@ -306,19 +306,19 @@ test('watch remote sparse', async t => {
     })
   })
 
-  await pda.writeFile(src, 'a.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'b.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'a.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'a.txt', 'two', 'utf8')
-  await pda.writeFile(src, 'b.txt', 'two', 'utf8')
-  await pda.writeFile(src, 'c.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'a.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'b.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'a.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'a.txt', 'two', 'utf8')
+  await dba.writeFile(src, 'b.txt', 'two', 'utf8')
+  await dba.writeFile(src, 'c.txt', 'one', 'utf8')
 
   // wait 100ms to let metadata sync
   await new Promise(resolve => setTimeout(resolve, 100))
 
-  await pda.download(dst, 'a.txt')
-  await pda.download(dst, 'c.txt')
-  await pda.download(dst, 'b.txt')
+  await dba.download(dst, 'a.txt')
+  await dba.download(dst, 'c.txt')
+  await dba.download(dst, 'b.txt')
 
   await done
 })
@@ -336,7 +336,7 @@ test('watch remote non-sparse', async t => {
   srcRS.pipe(dstRS).pipe(srcRS)
   await contentEvent(dst)
 
-  var stream = pda.watch(dst)
+  var stream = dba.watch(dst)
 
   // invalidation phase
 
@@ -355,13 +355,13 @@ test('watch remote non-sparse', async t => {
     })
   })
 
-  await pda.writeFile(src, 'a.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'b.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'a.txt', 'one', 'utf8')
-  await pda.writeFile(src, 'a.txt', 'two', 'utf8')
-  await pda.writeFile(src, 'b.txt', 'two', 'utf8')
-  await pda.writeFile(src, 'c.txt', 'one', 'utf8')
-  await pda.unlink(src, 'a.txt')
+  await dba.writeFile(src, 'a.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'b.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'a.txt', 'one', 'utf8')
+  await dba.writeFile(src, 'a.txt', 'two', 'utf8')
+  await dba.writeFile(src, 'b.txt', 'two', 'utf8')
+  await dba.writeFile(src, 'c.txt', 'one', 'utf8')
+  await dba.unlink(src, 'a.txt')
   await done
 })
 
@@ -374,7 +374,7 @@ test('createNetworkActivityStream', async t => {
   const dst = ddrive(tutil.tmpdir(), src.key, {sparse: false})
 
   var done = new Promise(resolve => {
-    var stream = pda.createNetworkActivityStream(dst)
+    var stream = dba.createNetworkActivityStream(dst)
     var gotPeer = false
     var stats = {
       metadata: {

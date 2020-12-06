@@ -15,15 +15,15 @@ var ScopedFS = require('scoped-fs')
 var archive = ddrive('./my-ddrive')
 var scopedfs = new ScopedFS('./my-scoped-fs')
 
-await pda.readFile(archive, '/hello.txt') // read the published hello.txt
-await pda.readFile(scopedfs, '/hello.txt') // read the local hello.txt
+await dba.readFile(archive, '/hello.txt') // read the published hello.txt
+await dba.readFile(scopedfs, '/hello.txt') // read the local hello.txt
 ```
 
 ** NOTE: this library is written natively for node 7 and above. **
 
 To use with node versions lesser than 7 use:
 ```js
-var pda = require('dbrowser-legacy-api/es5');
+var dba = require('dbrowser-legacy-api/es5');
 ```
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -67,21 +67,21 @@ var pda = require('dbrowser-legacy-api/es5');
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ```js
-const pda = require('dbrowser-legacy-api')
+const dba = require('dbrowser-legacy-api')
 ```
 
 ## Lookup
 
 ### stat(archive, name[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Entry name (string).
- - Returns a DDrive Stat entry (object).
+ - Returns a dDrive Stat entry (object).
  - Throws NotFoundError
 
 ```js
 // by name:
-var st = await pda.stat(archive, '/dwebx.json')
+var st = await dba.stat(archive, '/dwebx.json')
 st.isDirectory()
 st.isFile()
 console.log(st) /* =>
@@ -107,7 +107,7 @@ Stat {
 
 ### readFile(archive, name[, opts, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Entry path (string).
  - `opts`. Options (object|string). If a string, will act as `opts.encoding`.
  - `opts.encoding` Desired output encoding (string). May be 'binary', 'utf8', 'hex', or 'base64'. Default 'utf8'.
@@ -115,22 +115,22 @@ Stat {
  - Throws NotFoundError, NotAFileError.
 
 ```js
-var manifestStr = await pda.readFile(archive, '/dwebx.json')
-var imageBase64 = await pda.readFile(archive, '/favicon.png', 'base64')
+var manifestStr = await dba.readFile(archive, '/dwebx.json')
+var imageBase64 = await dba.readFile(archive, '/favicon.png', 'base64')
 ```
 
 ### readdir(archive, path[, opts, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `path` Target directory path (string).
  - `opts.recursive` Read all subfolders and their files as well?
  - Returns an array of file and folder names.
 
 ```js
-var listing = await pda.readdir(archive, '/assets')
+var listing = await dba.readdir(archive, '/assets')
 console.log(listing) // => ['profile.png', 'styles.css']
 
-var listing = await pda.readdir(archive, '/', { recursive: true })
+var listing = await dba.readdir(archive, '/', { recursive: true })
 console.log(listing) /* => [
   'index.html',
   'assets',
@@ -141,14 +141,14 @@ console.log(listing) /* => [
 
 ### readSize(archive, path[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `path` Target directory path (string).
  - Returns a number (size in bytes).
 
 This method will recurse on folders.
 
 ```js
-var size = await pda.readSize(archive, '/assets')
+var size = await dba.readSize(archive, '/assets')
 console.log(size) // => 123
 ```
 
@@ -156,7 +156,7 @@ console.log(size) // => 123
 
 ### writeFile(archive, name, data[, opts, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Entry path (string).
  - `data` Data to write (string|Buffer).
  - `opts`. Options (object|string). If a string, will act as `opts.encoding`.
@@ -164,37 +164,37 @@ console.log(size) // => 123
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
 
 ```js
-await pda.writeFile(archive, '/hello.txt', 'world', 'utf8')
-await pda.writeFile(archive, '/profile.png', fs.readFileSync('/tmp/dog.png'))
+await dba.writeFile(archive, '/hello.txt', 'world', 'utf8')
+await dba.writeFile(archive, '/profile.png', fs.readFileSync('/tmp/dog.png'))
 ```
 
 ### mkdir(archive, name[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Directory path (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
 
 ```js
-await pda.mkdir(archive, '/stuff')
+await dba.mkdir(archive, '/stuff')
 ```
 
 ### copy(archive, sourceName, targetName[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `sourceName` Path to file or directory to copy (string).
  - `targetName` Where to copy the file or folder to (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
 
 ```js
 // copy file:
-await pda.copy(archive, '/foo.txt', '/foo.txt.back')
+await dba.copy(archive, '/foo.txt', '/foo.txt.back')
 // copy folder:
-await pda.copy(archive, '/stuff', '/stuff-copy')
+await dba.copy(archive, '/stuff', '/stuff-copy')
 ```
 
 ### rename(archive, sourceName, targetName[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `sourceName` Path to file or directory to rename (string).
  - `targetName` What the file or folder should be named (string).
  - Throws ArchiveNotWritableError, InvalidPathError, EntryAlreadyExistsError, ParentFolderDoesntExistError, InvalidEncodingError.
@@ -203,57 +203,57 @@ This is equivalent to moving a file/folder.
 
 ```js
 // move file:
-await pda.rename(archive, '/foo.txt', '/foo.md')
+await dba.rename(archive, '/foo.txt', '/foo.md')
 // move folder:
-await pda.rename(archive, '/stuff', '/things')
+await dba.rename(archive, '/stuff', '/things')
 ```
 
 ## Delete
 
 ### unlink(archive, name[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Entry path (string).
  - Throws ArchiveNotWritableError, NotFoundError, NotAFileError
 
 ```js
-await pda.unlink(archive, '/hello.txt')
+await dba.unlink(archive, '/hello.txt')
 ```
 
 ### rmdir(archive, name[, opts, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `name` Entry path (string).
  - `opts.recursive` Delete all subfolders and files if the directory is not empty.
  - Throws ArchiveNotWritableError, NotFoundError, NotAFolderError, DestDirectoryNotEmpty
 
 ```js
-await pda.rmdir(archive, '/stuff', {recursive: true})
+await dba.rmdir(archive, '/stuff', {recursive: true})
 ```
 
 ## Network
 
 ### download(archive, name[, cb])
 
- - `archive` DDrive archive (object). Can not be a scoped-fs object.
+ - `archive` dDrive archive (object). Can not be a scoped-fs object.
  - `name` Entry path (string). Can point to a file or folder.
 
 Download an archive file or folder-tree.
 
 ```js
 // download a specific file:
-await pda.download(archive, '/foo.txt')
+await dba.download(archive, '/foo.txt')
 // download a specific folder and all children:
-await pda.download(archive, '/bar/')
+await dba.download(archive, '/bar/')
 // download the entire archive:
-await pda.download(archive, '/')
+await dba.download(archive, '/')
 ```
 
 ## Activity Streams
 
 ### watch(archive[, path])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `path` Entry path (string) or [anymatch](npm.im/anymatch) pattern (array of strings). If falsy, will watch all files.
  - Returns a Readable stream.
 
@@ -265,14 +265,14 @@ Watches the given path or path-pattern for file events, which it emits as an [em
 An archive will emit "invalidated" first, when it receives the new metadata for the file. It will then emit "changed" when the content arrives. (A local archive will emit "invalidated" immediately before "changed.")
 
 ```js
-var es = pda.watch(archive)
-var es = pda.watch(archive, 'foo.txt')
-var es = pda.watch(archive, ['**/*.txt', '**/*.md'])
+var es = dba.watch(archive)
+var es = dba.watch(archive, 'foo.txt')
+var es = dba.watch(archive, ['**/*.txt', '**/*.md'])
 
 es.on('data', ([event, args]) => {
   if (event === 'invalidated') {
     console.log(args.path, 'has been invalidated')
-    pda.download(archive, args.path)
+    dba.download(archive, args.path)
   } else if (event === 'changed') {
     console.log(args.path, 'has changed')
   }
@@ -281,10 +281,10 @@ es.on('data', ([event, args]) => {
 // alternatively, via emit-stream:
 
 var emitStream = require('emit-stream')
-var events = emitStream(pda.watch(archive))
+var events = emitStream(dba.watch(archive))
 events.on('invalidated', args => {
   console.log(args.path, 'has been invalidated')
-  pda.download(archive, args.path)
+  dba.download(archive, args.path)
 })
 events.on('changed', args => {
   console.log(args.path, 'has changed')
@@ -293,7 +293,7 @@ events.on('changed', args => {
 
 ### createNetworkActivityStream(archive)
 
- - `archive` DDrive archive (object). Can not be a scoped-fs object.
+ - `archive` dDrive archive (object). Can not be a scoped-fs object.
  - Returns a Readable stream.
 
 Watches the archive for network events, which it emits as an [emit-stream](https://github.com/substack/emit-stream). Supported events:
@@ -304,7 +304,7 @@ Watches the archive for network events, which it emits as an [emit-stream](https
  - `['sync',{feed}]` - All known blocks have been downloaded. `feed` will either be "metadata" or "content".
 
 ```js
-var es = pda.createNetworkActivityStream(archive)
+var es = dba.createNetworkActivityStream(archive)
 
 es.on('data', ([event, args]) => {
   if (event === 'network-changed') {
@@ -351,7 +351,7 @@ events.on('sync', args => {
 Copies a file-tree into an archive.
 
 ```js
-var stats = await pda.exportFilesystemToArchive({
+var stats = await dba.exportFilesystemToArchive({
   srcPath: '/tmp/mystuff',
   dstArchive: archive,
   inplaceImport: true
@@ -385,7 +385,7 @@ NOTE
  - Unlike exportFilesystemToArchive, this will not compare the target for equality before copying. If `overwriteExisting` is true, it will simply copy all files again.
 
 ```js
-var stats = await pda.exportArchiveToFilesystem({
+var stats = await dba.exportArchiveToFilesystem({
   srcArchive: archive,
   dstPath: '/tmp/mystuff',
   skipUndownloadedFiles: true
@@ -414,7 +414,7 @@ NOTE
  - Unlike exportFilesystemToArchive, this will not compare the target for equality before copying. It copies files indescriminately.
 
 ```js
-var stats = await pda.exportArchiveToArchive({
+var stats = await dba.exportArchiveToArchive({
   srcArchive: archiveA,
   dstArchive: archiveB,
   skipUndownloadedFiles: true
@@ -431,35 +431,35 @@ console.log(stats) /* => {
 
 ### readManifest(archive[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
 
 A sugar to get the manifest object.
 
 ```js
-var manifestObj = await pda.readManifest(archive)
+var manifestObj = await dba.readManifest(archive)
 ```
 
 ### writeManifest(archive, manifest[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `manifest` Manifest values (object).
 
 A sugar to write the manifest object.
 
 ```js
-await pda.writeManifest(archive, { title: 'My dwebx!' })
+await dba.writeManifest(archive, { title: 'My dwebx!' })
 ```
 
 ### updateManifest(archive, manifest[, cb])
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `manifest` Manifest values (object).
 
 A sugar to modify the manifest object.
 
 ```js
-await pda.writeManifest(archive, { title: 'My dwebx!', description: 'the desc' })
-await pda.writeManifest(archive, { title: 'My new title!' }) // preserves description
+await dba.writeManifest(archive, { title: 'My dwebx!', description: 'the desc' })
+await dba.writeManifest(archive, { title: 'My new title!' }) // preserves description
 ```
 
 ### generateManifest(opts)
@@ -500,10 +500,10 @@ See: https://github.com/datprotocol/dwebx.json
 Get a list of differences between the two archives at the given paths.
 
 ```js
-await pda.diff(archiveA, '/', archiveB, '/')
-await pda.diff(archiveA, '/', archiveB, '/', {shallow: false, compareContent: true})
-await pda.diff(archiveA, '/', archiveB, '/', {paths: ['/foo', '/bar']})
-await pda.diff(archiveA, '/', archiveB, '/', {ops: ['add']}) // additions only
+await dba.diff(archiveA, '/', archiveB, '/')
+await dba.diff(archiveA, '/', archiveB, '/', {shallow: false, compareContent: true})
+await dba.diff(archiveA, '/', archiveB, '/', {paths: ['/foo', '/bar']})
+await dba.diff(archiveA, '/', archiveB, '/', {ops: ['add']}) // additions only
 ```
 
 Output looks like:
@@ -534,10 +534,10 @@ Output looks like:
 Merges the source archive into the destinatio archive at the given paths, causing `dstArchive` content to match `srcArchive`.
 
 ```js
-await pda.merge(archiveA, '/', archiveB, '/')
-await pda.merge(archiveA, '/', archiveB, '/', {shallow: false, compareContent: true})
-await pda.merge(archiveA, '/', archiveB, '/', {paths: ['/foo', '/bar']})
-await pda.merge(archiveA, '/', archiveB, '/', {ops: ['add']}) // additions only
+await dba.merge(archiveA, '/', archiveB, '/')
+await dba.merge(archiveA, '/', archiveB, '/', {shallow: false, compareContent: true})
+await dba.merge(archiveA, '/', archiveB, '/', {paths: ['/foo', '/bar']})
+await dba.merge(archiveA, '/', archiveB, '/', {ops: ['add']}) // additions only
 ```
 
 Output looks like:
@@ -557,14 +557,14 @@ Output looks like:
 
 ### findEntryByContentBlock(archive, block)
 
- - `archive` DDrive archive (object).
+ - `archive` dDrive archive (object).
  - `block` Content-block index
  - Returns a Promise for `{name:, start:, end:}`
 
 Runs a binary search to find the file-entry that the given content-block index belongs to.
 
 ```js
-await pda.findEntryByContentBlock(archive, 5)
+await dba.findEntryByContentBlock(archive, 5)
 /* => {
   name: '/foo.txt',
   start: 4,

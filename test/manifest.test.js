@@ -1,12 +1,12 @@
 const test = require('ava')
 const tutil = require('./util')
-const pda = require('../index')
+const dba = require('../index')
 
 test('read/write/update manifest', async t => {
   var archive = await tutil.createArchive([])
   await new Promise(resolve => archive.ready(resolve))
 
-  await pda.writeManifest(archive, {
+  await dba.writeManifest(archive, {
     url: `dwebx://${tutil.FAKE_DAT_KEY}`,
     title: 'My DWebX',
     description: 'This dwebx has a manifest!',
@@ -18,7 +18,7 @@ test('read/write/update manifest', async t => {
     }
   })
 
-  t.deepEqual(await pda.readManifest(archive), {
+  t.deepEqual(await dba.readManifest(archive), {
     title: 'My DWebX',
     description: 'This dwebx has a manifest!',
     type: ['foo', 'bar'],
@@ -30,12 +30,12 @@ test('read/write/update manifest', async t => {
     }
   })
 
-  await pda.updateManifest(archive, {
+  await dba.updateManifest(archive, {
     title: 'My DWebX!!',
     type: 'foo'
   })
 
-  t.deepEqual(await pda.readManifest(archive), {
+  t.deepEqual(await dba.readManifest(archive), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -47,11 +47,11 @@ test('read/write/update manifest', async t => {
     }
   })
 
-  await pda.updateManifest(archive, {
+  await dba.updateManifest(archive, {
     author: 'Robert'
   })
 
-  t.deepEqual(await pda.readManifest(archive), {
+  t.deepEqual(await dba.readManifest(archive), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -62,11 +62,11 @@ test('read/write/update manifest', async t => {
     }
   })
 
-  await pda.updateManifest(archive, {
+  await dba.updateManifest(archive, {
     author: 'dwebx://ffffffffffffffffffffffffffffffff'
   })
 
-  t.deepEqual(await pda.readManifest(archive), {
+  t.deepEqual(await dba.readManifest(archive), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -79,12 +79,12 @@ test('read/write/update manifest', async t => {
 
   // should ignore bad well-known values
   // but leave others alone
-  await pda.updateManifest(archive, {
+  await dba.updateManifest(archive, {
     author: true,
     foobar: true
   })
 
-  t.deepEqual(await pda.readManifest(archive), {
+  t.deepEqual(await dba.readManifest(archive), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -100,7 +100,7 @@ test('read/write/update manifest', async t => {
 test('read/write/update manifest w/fs', async t => {
   var fs = await tutil.createFs([])
 
-  await pda.writeManifest(fs, {
+  await dba.writeManifest(fs, {
     url: `dwebx://${tutil.FAKE_DAT_KEY}`,
     title: 'My DWebX',
     description: 'This dwebx has a manifest!',
@@ -112,7 +112,7 @@ test('read/write/update manifest w/fs', async t => {
     }
   })
 
-  t.deepEqual(await pda.readManifest(fs), {
+  t.deepEqual(await dba.readManifest(fs), {
     title: 'My DWebX',
     description: 'This dwebx has a manifest!',
     type: ['foo', 'bar'],
@@ -124,12 +124,12 @@ test('read/write/update manifest w/fs', async t => {
     }
   })
 
-  await pda.updateManifest(fs, {
+  await dba.updateManifest(fs, {
     title: 'My DWebX!!',
     type: 'foo'
   })
 
-  t.deepEqual(await pda.readManifest(fs), {
+  t.deepEqual(await dba.readManifest(fs), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -141,11 +141,11 @@ test('read/write/update manifest w/fs', async t => {
     }
   })
 
-  await pda.updateManifest(fs, {
+  await dba.updateManifest(fs, {
     author: 'Robert'
   })
 
-  t.deepEqual(await pda.readManifest(fs), {
+  t.deepEqual(await dba.readManifest(fs), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
@@ -156,11 +156,11 @@ test('read/write/update manifest w/fs', async t => {
     }
   })
 
-  await pda.updateManifest(fs, {
+  await dba.updateManifest(fs, {
     author: 'dwebx://ffffffffffffffffffffffffffffffff'
   })
 
-  t.deepEqual(await pda.readManifest(fs), {
+  t.deepEqual(await dba.readManifest(fs), {
     title: 'My DWebX!!',
     description: 'This dwebx has a manifest!',
     type: ['foo'],
